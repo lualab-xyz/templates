@@ -1,0 +1,7 @@
+display_name: "OpenCode"
+description: "OpenCode CLI configuration"
+icon: "opencode-light.png"
+icon_dark: "opencode-dark.png"
+services:
+  - terminal|ttyd|7681
+  - web|web|4096
