@@ -14,14 +14,7 @@ RUN curl -fsSL "https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.x8
 
 RUN mkdir -p /root/.codex
 COPY files/root/.codex/config.toml /root/.codex/config.toml
-RUN cat > /root/.tmux.conf <<'EOF'
-set -g default-terminal "tmux-256color"
-set -as terminal-features ",xterm-256color:RGB"
-set -g status off
-set -g pane-border-status off
-set -g pane-border-format ""
-set -g mouse off
-EOF
+COPY files/root/.tmux.conf /root/.tmux.conf
 
 WORKDIR /workspace
 

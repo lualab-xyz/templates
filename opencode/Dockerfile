@@ -18,15 +18,8 @@ RUN mkdir -p /root/.opencode /root/.local/share/opencode
 COPY files/root/.opencode/opencode.jsonc /root/.opencode/opencode.jsonc
 COPY files/root/.opencode/tui.json /root/.opencode/tui.json
 COPY files/root/.local/share/opencode/auth.json /root/.local/share/opencode/auth.json
+COPY files/root/.tmux.conf /root/.tmux.conf
 COPY defaults.env /opt/defaults.env
-RUN cat > /root/.tmux.conf <<'EOF'
-set -g default-terminal "tmux-256color"
-set -as terminal-features ",xterm-256color:RGB"
-set -g status off
-set -g pane-border-status off
-set -g pane-border-format ""
-set -g mouse off
-EOF
 
 WORKDIR /workspace
 
