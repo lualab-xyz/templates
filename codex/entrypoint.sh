@@ -4,7 +4,9 @@ set -euo pipefail
 DEFAULTS_FILE="/opt/defaults.env"
 if [ -f "$DEFAULTS_FILE" ]; then
   # shellcheck disable=SC1091
+  set -a
   . "$DEFAULTS_FILE"
+  set +a
 fi
 
 TERMINAL_PORT="${TERMINAL_PORT:-${CODEPODS_TERMINAL_PORT:-7681}}"
