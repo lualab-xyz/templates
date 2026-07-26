@@ -11,6 +11,7 @@ fi
 
 TERMINAL_PORT="${TERMINAL_PORT:-${CODEPODS_TERMINAL_PORT:-7681}}"
 WEB_PORT="${WEB_PORT:-${CODEPODS_WEB_PORT:-4096}}"
+BASE_PATH="${OPENCODE_BASE_PATH:-${CODEPODS_BASE_PATH:-}}"
 FONT_OPTION="fontSize=${TERM_FONT_SIZE:-14}"
 TMUX_CMD=(tmux new-session -A -s main "cd /workspace && exec opencode")
 
@@ -40,7 +41,12 @@ start_web() {
     return
   fi
   echo "Starting OpenCode web on port $WEB_PORT"
-  opencode web --port "$WEB_PORT" --hostname 0.0.0.0 >/tmp/opencode-web.log 2>&1 &
+  local base_path_arg=()
+  if [ -n "$BASE_PATH" ]; then
+    echo "Using base path: $BASE_PATH"
+    base_path_arg=(--base-path "$BASE_PATH")
+  fi
+  opencode web --port "$WEB_PORT" --hostname 0.0.0.0 "${base_path_arg[@]}" >/tmp/opencode-web.log 2>&1 &
   pids+=("$!")
 }
 

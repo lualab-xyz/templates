@@ -4,9 +4,12 @@ ENV TERM=tmux-256color
 ENV LANG=en_US.UTF-8
 
 RUN apt-get update && apt-get install -y \
-    curl nodejs npm nano git sudo ca-certificates gnupg tmux \
-    && rm -rf /var/lib/apt/lists/* \
-    && npm install -g opencode-ai
+    curl nano git sudo ca-certificates gnupg tmux \
+    && rm -rf /var/lib/apt/lists/*
+
+# OpenCode binary (feat/base-path-support build)
+COPY files/bin/opencode /usr/local/bin/opencode
+RUN chmod +x /usr/local/bin/opencode
 
 # ttyd - terminal web (static binary)
 RUN curl -fsSL "https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.x86_64" \
