@@ -1,0 +1,7 @@
+display_name: "Kimi Code"
+description: "Moonshot Kimi Code CLI configuration"
+icon: "kimi-light.svg"
+icon_dark: "kimi-dark.svg"
+services:
+  - terminal|ttyd|7681
+  - web|web|5494
