@@ -25,6 +25,7 @@ COPY defaults.env /opt/defaults.env
 WORKDIR /workspace
 
 COPY entrypoint.sh /usr/local/bin/openclaw-entrypoint
-RUN chmod +x /usr/local/bin/openclaw-entrypoint
+COPY set-provider.sh /usr/local/bin/set-provider.sh
+RUN chmod +x /usr/local/bin/openclaw-entrypoint /usr/local/bin/set-provider.sh
 
 ENTRYPOINT ["/usr/local/bin/openclaw-entrypoint"]

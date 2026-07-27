@@ -18,6 +18,7 @@ WORKDIR /workspace
 
 COPY defaults.env /opt/defaults.env
 COPY entrypoint.sh /usr/local/bin/copilot-entrypoint
-RUN chmod +x /usr/local/bin/copilot-entrypoint
+COPY set-provider.sh /usr/local/bin/set-provider.sh
+RUN chmod +x /usr/local/bin/copilot-entrypoint /usr/local/bin/set-provider.sh
 
 ENTRYPOINT ["/usr/local/bin/copilot-entrypoint"]

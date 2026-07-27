@@ -2,12 +2,17 @@
 set -euo pipefail
 
 DEFAULTS_FILE="/opt/defaults.env"
-if [ -f "$DEFAULTS_FILE" ]; then
-  # shellcheck disable=SC1091
-  set -a
-  . "$DEFAULTS_FILE"
-  set +a
-fi
+
+load_defaults() {
+  if [ -f "$DEFAULTS_FILE" ]; then
+    # shellcheck disable=SC1091
+    set -a
+    . "$DEFAULTS_FILE"
+    set +a
+  fi
+}
+
+load_defaults
 
 TERMINAL_PORT="${TERMINAL_PORT:-${CODEPODS_TERMINAL_PORT:-7681}}"
 if [ -z "$TERMINAL_PORT" ]; then
@@ -17,7 +22,7 @@ fi
 
 FONT_OPTION="fontSize=${TERM_FONT_SIZE:-14}"
 COPILOT_MODEL="${COPILOT_MODEL:-default}"
-TMUX_CMD=(tmux new-session -A -s main "cd /workspace && copilot config set default-model \"$COPILOT_MODEL\" >/dev/null 2>&1 || true; exec copilot --resume")
+TMUX_CMD=(tmux new-session -A -s main "cd /workspace && exec copilot --model \"$COPILOT_MODEL\" --resume")
 cd /workspace
 
 pids=()
@@ -55,6 +60,7 @@ start_services() {
 }
 
 while true; do
+  load_defaults
   start_services
   if $stop; then
     break
