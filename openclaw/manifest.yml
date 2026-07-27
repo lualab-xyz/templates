@@ -1,7 +1,7 @@
 display_name: "OpenClaw"
 description: "OpenClaw personal AI assistant gateway"
-icon: "openclaw-light.png"
-icon_dark: "openclaw-dark.png"
+icon: "openclaw-light.svg"
+icon_dark: "openclaw-dark.svg"
 services:
   - terminal|ttyd|7681
   - web|openclaw|18789
