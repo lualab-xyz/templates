@@ -19,8 +19,10 @@ update_or_set() {
   fi
 }
 
-update_or_set "COPILOT_MODEL" "$MODEL_NAME"
 update_or_set "COPILOT_PROVIDER_TYPE" "$PROVIDER_TYPE"
+update_or_set "COPILOT_PROVIDER_API_KEY" "$API_KEY"
+update_or_set "COPILOT_PROVIDER_BASE_URL" "$BASE_URL"
+update_or_set "COPILOT_PROVIDER_WIRE_API" "responses"
+update_or_set "COPILOT_MODEL" "$MODEL_NAME"
 
-echo "Copilot model preference updated to ${MODEL_NAME} (providerType=${PROVIDER_TYPE})."
-echo "Note: GitHub Copilot requires GitHub authentication; custom baseUrl/apiKey are not supported by this CLI."
+echo "Copilot BYOK provider set to ${PROVIDER_NAME}/${MODEL_NAME} via ${BASE_URL}"

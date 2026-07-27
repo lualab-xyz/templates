@@ -22,6 +22,7 @@ fi
 
 FONT_OPTION="fontSize=${TERM_FONT_SIZE:-14}"
 COPILOT_MODEL="${COPILOT_MODEL:-default}"
+
 TMUX_CMD=(tmux new-session -A -s main "cd /workspace && exec copilot --model \"$COPILOT_MODEL\" --resume")
 cd /workspace
 
