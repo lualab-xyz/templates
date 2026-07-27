@@ -10,15 +10,9 @@ if [ -f "$DEFAULTS_FILE" ]; then
 fi
 
 TERMINAL_PORT="${TERMINAL_PORT:-${CODEPODS_TERMINAL_PORT:-7681}}"
-if [ -z "$TERMINAL_PORT" ]; then
-  echo "Terminal port not configured. Please set CODEPODS_TERMINAL_PORT." >&2
-  exit 1
-fi
-
+WEB_PORT="${WEB_PORT:-${CODEPODS_WEB_PORT:-18789}}"
 FONT_OPTION="fontSize=${TERM_FONT_SIZE:-14}"
-COPILOT_MODEL="${COPILOT_MODEL:-default}"
-TMUX_CMD=(tmux new-session -A -s main "cd /workspace && copilot config set default-model \"$COPILOT_MODEL\" >/dev/null 2>&1 || true; exec copilot --resume")
-cd /workspace
+TMUX_CMD=(tmux new-session -A -s main "cd /workspace && exec bash")
 
 pids=()
 stop=false
@@ -32,14 +26,21 @@ cleanup() {
 
 start_ttyd() {
   echo "Starting ttyd on port $TERMINAL_PORT, attaching tmux session 'main'"
-
   /usr/local/bin/ttyd \
     --port "$TERMINAL_PORT" \
     --writable \
     --client-option disableLeaveAlert=true \
     --client-option "$FONT_OPTION" \
     "${TMUX_CMD[@]}" &
-  
+  pids+=("$!")
+}
+
+start_web() {
+  if [ -z "$WEB_PORT" ]; then
+    return
+  fi
+  echo "Starting OpenClaw gateway on port $WEB_PORT"
+  openclaw gateway run --port "$WEB_PORT" --auth token --token "${OPENCLAW_GATEWAY_TOKEN:-123456}" --allow-unconfigured >/tmp/openclaw-gateway.log 2>&1 &
   pids+=("$!")
 }
 
@@ -48,11 +49,11 @@ trap 'stop=true; cleanup' INT TERM
 start_services() {
   cleanup
   start_ttyd
-  if [ "${#pids[@]}" -eq 0 ]; then
-    return
-  fi
+  start_web
   wait -n "${pids[@]}"
 }
+
+cd /workspace
 
 while true; do
   start_services
