@@ -4,7 +4,7 @@ ENV TERM=tmux-256color
 ENV LANG=en_US.UTF-8
 
 RUN apt-get update && apt-get install -y \
-    curl nodejs npm nano git sudo ca-certificates gnupg gettext-base tmux \
+    curl nodejs npm nano git sudo ca-certificates gnupg tmux \
     && npm install -g @github/copilot \
     && rm -rf /var/lib/apt/lists/*
 

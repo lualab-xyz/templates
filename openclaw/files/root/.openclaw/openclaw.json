@@ -1,0 +1,18 @@
+{
+  "models": {
+    "mode": "replace",
+    "providers": {
+      "openai": {
+        "baseUrl": "http://172.17.0.1",
+        "apiKey": "123456",
+        "auth": "api-key",
+        "api": "openai-completions"
+      }
+    }
+  },
+  "gateway": {
+    "mode": "local",
+    "port": 18789,
+    "bind": "auto"
+  }
+}
