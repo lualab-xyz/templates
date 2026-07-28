@@ -6,7 +6,6 @@ MODEL_NAME="$2"
 API_KEY="$3"
 PROVIDER_NAME="$4"
 PROVIDER_TYPE="${5:-openai}"
-RESTART="${6:-false}"
 
 case "$PROVIDER_TYPE" in
   openai|openai_completions) API="openai-completions" ;;
@@ -69,8 +68,3 @@ PY
 openclaw models set "${PROVIDER_NAME}/${MODEL_NAME}"
 
 echo "OpenClaw provider set to ${PROVIDER_NAME}/${MODEL_NAME} (${API}) via ${BASE_URL}"
-
-if [ "$RESTART" = "true" ]; then
-  echo "Restart requested: killing tmux session 'main' to recreate with new provider"
-  tmux kill-session -t main >/dev/null 2>&1 || true
-fi

@@ -5,4 +5,4 @@ icon_dark: "codex-dark.svg"
 services:
   - terminal|ttyd|7681
 commands:
-  - set_provider: "/usr/local/bin/set-provider.sh $baseUrl $modelName $apiKey $providerName $providerType $restart"
+  - set_provider: "/usr/local/bin/set-provider.sh $baseUrl $modelName $apiKey $providerName $providerType"

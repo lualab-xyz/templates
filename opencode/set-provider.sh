@@ -6,7 +6,6 @@ MODEL_NAME="$2"
 API_KEY="$3"
 PROVIDER_NAME="$4"
 PROVIDER_TYPE="${5:-openai}"
-RESTART="${6:-false}"
 
 mkdir -p /root/.opencode /root/.local/share/opencode
 
@@ -45,8 +44,3 @@ with open(auth_path, 'w') as f:
 PY
 
 echo "OpenCode provider set to ${PROVIDER_NAME}/${MODEL_NAME} via ${BASE_URL}"
-
-if [ "$RESTART" = "true" ]; then
-  echo "Restart requested: killing tmux session 'main' to recreate with new provider"
-  tmux kill-session -t main >/dev/null 2>&1 || true
-fi
