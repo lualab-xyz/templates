@@ -7,3 +7,4 @@ services:
   - web|web|4096
 commands:
   - set_provider: "/usr/local/bin/set-provider.sh $baseUrl $modelName $apiKey $providerName $providerType"
+  - start_agent: "/usr/local/bin/start-agent.sh"

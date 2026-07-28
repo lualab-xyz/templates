@@ -19,6 +19,8 @@ WORKDIR /workspace
 
 COPY defaults.env /opt/defaults.env
 COPY entrypoint.sh /usr/local/bin/claude-entrypoint
-RUN chmod +x /usr/local/bin/claude-entrypoint
+COPY start-agent.sh /usr/local/bin/start-agent.sh
+COPY set-provider.sh /usr/local/bin/set-provider.sh
+RUN chmod +x /usr/local/bin/claude-entrypoint /usr/local/bin/start-agent.sh /usr/local/bin/set-provider.sh
 
 ENTRYPOINT ["/usr/local/bin/claude-entrypoint"]

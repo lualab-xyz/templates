@@ -21,6 +21,7 @@ WORKDIR /workspace
 COPY defaults.env /opt/defaults.env
 COPY entrypoint.sh /usr/local/bin/codex-entrypoint
 COPY set-provider.sh /usr/local/bin/set-provider.sh
-RUN chmod +x /usr/local/bin/codex-entrypoint /usr/local/bin/set-provider.sh
+COPY start-agent.sh /usr/local/bin/start-agent.sh
+RUN chmod +x /usr/local/bin/codex-entrypoint /usr/local/bin/set-provider.sh /usr/local/bin/start-agent.sh
 
 ENTRYPOINT ["/usr/local/bin/codex-entrypoint"]

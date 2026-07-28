@@ -4,3 +4,5 @@ icon: "claude-light.svg"
 icon_dark: "claude-dark.svg"
 services:
   - terminal|ttyd|7681
+commands:
+  - start_agent: "/usr/local/bin/start-agent.sh"
