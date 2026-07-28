@@ -6,6 +6,7 @@ MODEL_NAME="$2"
 API_KEY="$3"
 PROVIDER_NAME="$4"
 PROVIDER_TYPE="${5:-openai}"
+RESTART="${6:-false}"
 
 case "$PROVIDER_TYPE" in
   openai) TYPE="openai_responses" ;;
@@ -47,3 +48,8 @@ with open('/root/.kimi/config.toml', 'w') as f:
 PY
 
 echo "Kimi provider set to ${PROVIDER_NAME}/${MODEL_NAME} (${TYPE}) via ${BASE_URL}"
+
+if [ "$RESTART" = "true" ]; then
+  echo "Restart requested: killing tmux session 'main' to recreate with new provider"
+  tmux kill-session -t main >/dev/null 2>&1 || true
+fi

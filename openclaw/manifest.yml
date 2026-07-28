@@ -6,4 +6,4 @@ services:
   - terminal|ttyd|7681
   - web|openclaw|18789
 commands:
-  - set_provider: "/usr/local/bin/set-provider.sh $baseUrl $modelName $apiKey $providerName $providerType"
+  - set_provider: "/usr/local/bin/set-provider.sh $baseUrl $modelName $apiKey $providerName $providerType $restart"
