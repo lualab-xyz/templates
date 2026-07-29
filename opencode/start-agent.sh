@@ -11,6 +11,10 @@ fi
 
 PID_FILE="/var/run/start-agent.pid"
 TERMINAL_PORT="${TERMINAL_PORT:-${CODEPODS_TERMINAL_PORT:-7681}}"
+if [ -z "$TERMINAL_PORT" ]; then
+  echo "ERROR: Terminal port not configured. Please set CODEPODS_TERMINAL_PORT." >&2
+  exit 1
+fi
 WEB_PORT="${WEB_PORT:-${CODEPODS_WEB_PORT:-4096}}"
 BASE_PATH="${OPENCODE_BASE_PATH:-${CODEPODS_BASE_PATH:-}}"
 FONT_OPTION="fontSize=${TERM_FONT_SIZE:-14}"
@@ -65,6 +69,7 @@ start_services() {
     echo "ERROR: no services started" >&2
     return 1
   fi
+  echo "OK: agent services started"
   wait -n "${pids[@]}"
 }
 

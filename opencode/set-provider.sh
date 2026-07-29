@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BASE_URL="$1"
-MODEL_NAME="$2"
-API_KEY="$3"
-PROVIDER_NAME="$4"
-PROVIDER_TYPE="${5:-openai}"
+set_provider() {
+  BASE_URL="$1"
+  MODEL_NAME="$2"
+  API_KEY="$3"
+  PROVIDER_NAME="$4"
+  PROVIDER_TYPE="${5:-openai}"
 
-mkdir -p /root/.opencode /root/.local/share/opencode
+  mkdir -p /root/.opencode /root/.local/share/opencode
 
-python3 - "$BASE_URL" "$MODEL_NAME" "$API_KEY" "$PROVIDER_NAME" "$PROVIDER_TYPE" <<'PY'
+  python3 - "$BASE_URL" "$MODEL_NAME" "$API_KEY" "$PROVIDER_NAME" "$PROVIDER_TYPE" <<'PY'
 import json, sys
 
 base_url, model_name, api_key, provider_name, _provider_type = sys.argv[1:6]
@@ -43,4 +44,10 @@ with open(auth_path, 'w') as f:
     f.write('\n')
 PY
 
-echo "OpenCode provider set to ${PROVIDER_NAME}/${MODEL_NAME} via ${BASE_URL}"
+  echo "OK: OpenCode provider set to ${PROVIDER_NAME}/${MODEL_NAME} via ${BASE_URL}"
+}
+
+if ! set_provider "$@"; then
+  echo "ERROR: failed to set OpenCode provider" >&2
+  exit 1
+fi
