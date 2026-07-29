@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BASE_URL="$1"
-MODEL_NAME="$2"
-API_KEY="$3"
-PROVIDER_NAME="$4"
-PROVIDER_TYPE="${5:-openai}"
+set_provider() {
+  BASE_URL="$1"
+  MODEL_NAME="$2"
+  API_KEY="$3"
+  PROVIDER_NAME="$4"
+  PROVIDER_TYPE="${5:-openai}"
 
-mkdir -p /root/.codex
+  mkdir -p /root/.codex
 
-python3 - "$BASE_URL" "$MODEL_NAME" "$API_KEY" "$PROVIDER_NAME" "$PROVIDER_TYPE" <<'PY'
+  python3 - "$BASE_URL" "$MODEL_NAME" "$API_KEY" "$PROVIDER_NAME" "$PROVIDER_TYPE" <<'PY'
 import sys
 
 def esc(s: str) -> str:
@@ -35,4 +36,10 @@ with open('/root/.codex/config.toml', 'w') as f:
     f.write(toml)
 PY
 
-echo "Codex provider set to ${PROVIDER_NAME}/${MODEL_NAME} via ${BASE_URL}"
+  echo "OK: Codex provider set to ${PROVIDER_NAME}/${MODEL_NAME} via ${BASE_URL}"
+}
+
+if ! set_provider "$@"; then
+  echo "ERROR: failed to set Codex provider" >&2
+  exit 1
+fi

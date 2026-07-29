@@ -1,26 +1,27 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BASE_URL="$1"
-MODEL_NAME="$2"
-API_KEY="$3"
-PROVIDER_NAME="$4"
-PROVIDER_TYPE="${5:-openai}"
+set_provider() {
+  BASE_URL="$1"
+  MODEL_NAME="$2"
+  API_KEY="$3"
+  PROVIDER_NAME="$4"
+  PROVIDER_TYPE="${5:-openai}"
 
-case "$PROVIDER_TYPE" in
-  openai) TYPE="openai_responses" ;;
-  openai_legacy) TYPE="openai_legacy" ;;
-  anthropic|claude) TYPE="anthropic" ;;
-  google|gemini) TYPE="gemini" ;;
-  kimi) TYPE="kimi" ;;
-  vertex) TYPE="vertexai" ;;
-  *) TYPE="openai_responses" ;;
-esac
+  case "$PROVIDER_TYPE" in
+    openai) TYPE="openai_responses" ;;
+    openai_legacy) TYPE="openai_legacy" ;;
+    anthropic|claude) TYPE="anthropic" ;;
+    google|gemini) TYPE="gemini" ;;
+    kimi) TYPE="kimi" ;;
+    vertex) TYPE="vertexai" ;;
+    *) TYPE="openai_responses" ;;
+  esac
 
-mkdir -p /root/.kimi
+  mkdir -p /root/.kimi
 
-PYTHON_BIN="${KIMI_PYTHON:-/root/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/bin/python3}"
-"$PYTHON_BIN" - "$BASE_URL" "$MODEL_NAME" "$API_KEY" "$PROVIDER_NAME" "$TYPE" <<'PY'
+  PYTHON_BIN="${KIMI_PYTHON:-/root/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/bin/python3}"
+  "$PYTHON_BIN" - "$BASE_URL" "$MODEL_NAME" "$API_KEY" "$PROVIDER_NAME" "$TYPE" <<'PY'
 import sys
 
 def esc(s: str) -> str:
@@ -46,4 +47,10 @@ with open('/root/.kimi/config.toml', 'w') as f:
     f.write(toml)
 PY
 
-echo "Kimi provider set to ${PROVIDER_NAME}/${MODEL_NAME} (${TYPE}) via ${BASE_URL}"
+  echo "OK: Kimi provider set to ${PROVIDER_NAME}/${MODEL_NAME} (${TYPE}) via ${BASE_URL}"
+}
+
+if ! set_provider "$@"; then
+  echo "ERROR: failed to set Kimi provider" >&2
+  exit 1
+fi

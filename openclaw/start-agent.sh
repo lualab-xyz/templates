@@ -9,12 +9,18 @@ if [ -f "$DEFAULTS_FILE" ]; then
   set +a
 fi
 
+PID_FILE="/var/run/start-agent.pid"
 TERMINAL_PORT="${TERMINAL_PORT:-${CODEPODS_TERMINAL_PORT:-7681}}"
-WEB_PORT="${WEB_PORT:-${CODEPODS_WEB_PORT:-18789}}"
+if [ -z "$TERMINAL_PORT" ]; then
+  echo "ERROR: Terminal port not configured. Please set CODEPODS_TERMINAL_PORT." >&2
+  exit 1
+fi
+
 FONT_OPTION="fontSize=${TERM_FONT_SIZE:-14}"
-# Idempotent: restart any previously started services
-tmux kill-session -t main >/dev/null 2>&1 || true
-pkill -f "openclaw gateway run" >/dev/null 2>&1 || true
+WEB_PORT="${WEB_PORT:-${CODEPODS_WEB_PORT:-18789}}"
+
+# Mark this invocation as the current owner
+echo "$$" > "$PID_FILE"
 
 TMUX_CMD=(tmux new-session -A -s main "cd /workspace && exec bash")
 
@@ -43,8 +49,8 @@ start_web() {
   if [ -z "$WEB_PORT" ]; then
     return
   fi
-  echo "Starting OpenClaw gateway on port $WEB_PORT"
-  openclaw gateway run --port "$WEB_PORT" --auth token --token "${OPENCLAW_GATEWAY_TOKEN:-123456}" --allow-unconfigured >/tmp/openclaw-gateway.log 2>&1 &
+  echo "Starting OpenClaw gateway web on port $WEB_PORT"
+  openclaw gateway run --port "$WEB_PORT" --auth token --token "${OPENCLAW_GATEWAY_TOKEN:-123456}" --allow-unconfigured > /tmp/openclaw-gateway.log 2>&1 &
   pids+=("$!")
 }
 
@@ -54,13 +60,22 @@ start_services() {
   cleanup
   start_ttyd
   start_web
+  if [ "${#pids[@]}" -eq 0 ]; then
+    echo "ERROR: no services started" >&2
+    return 1
+  fi
+  echo "OK: agent services started"
   wait -n "${pids[@]}"
 }
 
 cd /workspace
 
 while true; do
-  start_services
+  start_services || {
+    echo "ERROR: service loop failed; retrying in 2s..." >&2
+    sleep 2
+    continue
+  }
   if $stop; then
     break
   fi
@@ -68,3 +83,4 @@ while true; do
 done
 
 cleanup
+rm -f "$PID_FILE"

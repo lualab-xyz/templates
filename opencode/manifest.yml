@@ -3,8 +3,9 @@ description: "OpenCode CLI configuration"
 icon: "opencode-light.png"
 icon_dark: "opencode-dark.png"
 services:
-  - terminal|ttyd|7681
-  - web|web|4096
+  - "terminal|OpenCode CLI|7681"
+  - "web|OpenCode Web|4096"
 commands:
   - set_provider: "/usr/local/bin/set-provider.sh $baseUrl $modelName $apiKey $providerName $providerType"
   - start_agent: "/usr/local/bin/start-agent.sh"
+  - stop_agent: "/usr/local/bin/stop-agent.sh"
