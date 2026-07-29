@@ -29,6 +29,7 @@ WORKDIR /workspace
 COPY entrypoint.sh /usr/local/bin/opencode-entrypoint
 COPY set-provider.sh /usr/local/bin/set-provider.sh
 COPY start-agent.sh /usr/local/bin/start-agent.sh
-RUN chmod +x /usr/local/bin/opencode-entrypoint /usr/local/bin/set-provider.sh /usr/local/bin/start-agent.sh
+COPY stop-agent.sh /usr/local/bin/stop-agent.sh
+RUN chmod +x /usr/local/bin/opencode-entrypoint /usr/local/bin/set-provider.sh /usr/local/bin/start-agent.sh /usr/local/bin/stop-agent.sh
 
 ENTRYPOINT ["/usr/local/bin/opencode-entrypoint"]
