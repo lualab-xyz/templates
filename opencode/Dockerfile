@@ -4,7 +4,7 @@ ENV TERM=tmux-256color
 ENV LANG=en_US.UTF-8
 
 RUN apt-get update && apt-get install -y \
-    curl nano git sudo ca-certificates gnupg tmux \
+    curl nano git sudo ca-certificates gnupg tmux python3 \
     && rm -rf /var/lib/apt/lists/*
 
 # OpenCode binary (feat/base-path-support build)
