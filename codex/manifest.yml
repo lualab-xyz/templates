@@ -1,6 +1,11 @@
 display_name: "Codex"
 description: "OpenAI Codex CLI configuration"
+workspace_path: "/workspace"
 icon: "codex-light.svg"
 icon_dark: "codex-dark.svg"
 services:
-  - terminal|ttyd|7681
+  - "terminal|Codex CLI|7681"
+commands:
+  - set_provider: "/usr/local/bin/set-provider.sh $baseUrl $modelName $apiKey $providerName $providerType"
+  - start_agent: "/usr/local/bin/start-agent.sh"
+  - stop_agent: "/usr/local/bin/stop-agent.sh"

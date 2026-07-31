@@ -1,7 +1,12 @@
 display_name: "OpenClaw"
 description: "OpenClaw personal AI assistant gateway"
-icon: "openclaw-light.png"
-icon_dark: "openclaw-dark.png"
+workspace_path: "/workspace"
+icon: "openclaw-light.svg"
+icon_dark: "openclaw-dark.svg"
 services:
-  - terminal|ttyd|7681
-  - web|openclaw|18789
+  - "terminal|OpenClaw|7681"
+  - "web|Control UI|18789"
+commands:
+  - set_provider: "/usr/local/bin/set-provider.sh $baseUrl $modelName $apiKey $providerName $providerType"
+  - start_agent: "/usr/local/bin/start-agent.sh"
+  - stop_agent: "/usr/local/bin/stop-agent.sh"
