@@ -8,41 +8,33 @@ set_provider() {
   PROVIDER_NAME="$4"
   PROVIDER_TYPE="${5:-openai}"
 
-  mkdir -p /root/.opencode /root/.local/share/opencode
+  mkdir -p /tmp/opencode-test2/root/.opencode /tmp/opencode-test2/root/.local/share/opencode
 
-  python3 - "$BASE_URL" "$MODEL_NAME" "$API_KEY" "$PROVIDER_NAME" "$PROVIDER_TYPE" <<'PY'
-import json, sys
+  CONFIG_PATH='/tmp/opencode-test2/root/.opencode/opencode.jsonc'
+  AUTH_PATH='/tmp/opencode-test2/root/.local/share/opencode/auth.json'
 
-base_url, model_name, api_key, provider_name, _provider_type = sys.argv[1:6]
+  node - "$BASE_URL" "$MODEL_NAME" "$API_KEY" "$PROVIDER_NAME" "$PROVIDER_TYPE" "$CONFIG_PATH" "$AUTH_PATH" <<'JS'
+const fs = require('fs');
+const [baseUrl, modelName, apiKey, providerName, _providerType, configPath, authPath] = process.argv.slice(2);
 
-config_path = '/root/.opencode/opencode.jsonc'
-with open(config_path, 'r') as f:
-    cfg = json.load(f)
+const cfg = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+cfg.model = `${providerName}/${modelName}`;
+cfg.provider = {
+  [providerName]: {
+    options: {
+      baseURL: baseUrl,
+      resourceName: 'docker-host',
+    },
+    models: {
+      [modelName]: { name: modelName },
+    },
+  },
+};
+fs.writeFileSync(configPath, JSON.stringify(cfg, null, 2) + '\n');
 
-cfg['model'] = f'{provider_name}/{model_name}'
-cfg['provider'] = {
-    provider_name: {
-        'options': {
-            'baseURL': base_url,
-            'resourceName': 'docker-host',
-        },
-        'models': {
-            model_name: {
-                'name': model_name,
-            }
-        }
-    }
-}
-
-with open(config_path, 'w') as f:
-    json.dump(cfg, f, indent=2)
-    f.write('\n')
-
-auth_path = '/root/.local/share/opencode/auth.json'
-with open(auth_path, 'w') as f:
-    json.dump({provider_name: {'type': 'api', 'key': api_key}}, f, indent=2)
-    f.write('\n')
-PY
+const auth = { [providerName]: { type: 'api', key: apiKey } };
+fs.writeFileSync(authPath, JSON.stringify(auth, null, 2) + '\n');
+JS
 
   echo "OK: OpenCode provider set to ${PROVIDER_NAME}/${MODEL_NAME} via ${BASE_URL}"
 }
