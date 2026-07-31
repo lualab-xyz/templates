@@ -8,5 +8,6 @@ services:
   - "web|OpenCode Web|4096"
 commands:
   - set_provider: "/usr/local/bin/set-provider.sh $baseUrl $modelName $apiKey $providerName $providerType"
+  - set_git_proxy: "/usr/local/bin/set-git-proxy.sh $downloadUrl"
   - start_agent: "/usr/local/bin/start-agent.sh"
   - stop_agent: "/usr/local/bin/stop-agent.sh"
