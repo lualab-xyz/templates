@@ -1,5 +1,6 @@
 display_name: "Claude Code"
 description: "Anthropic Claude Code CLI configuration"
+workspace_path: "/workspace"
 icon: "claude-light.svg"
 icon_dark: "claude-dark.svg"
 services:

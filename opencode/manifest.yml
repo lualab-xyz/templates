@@ -1,5 +1,6 @@
 display_name: "OpenCode"
 description: "OpenCode CLI configuration"
+workspace_path: "/workspace"
 icon: "opencode-light.png"
 icon_dark: "opencode-dark.png"
 services:

@@ -46,6 +46,7 @@ Describe la plantilla para Codepods:
 ```yaml
 display_name: "Copilot"
 description: "GitHub Copilot CLI configuration"
+workspace_path: "/workspace"
 icon: "copilot-light.svg"
 icon_dark: "copilot-dark.svg"
 services:

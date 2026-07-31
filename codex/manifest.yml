@@ -1,5 +1,6 @@
 display_name: "Codex"
 description: "OpenAI Codex CLI configuration"
+workspace_path: "/workspace"
 icon: "codex-light.svg"
 icon_dark: "codex-dark.svg"
 services:
