@@ -25,6 +25,11 @@ COPY defaults.env /opt/defaults.env
 WORKDIR /workspace
 
 COPY entrypoint.sh /usr/local/bin/openclaw-entrypoint
-RUN chmod +x /usr/local/bin/openclaw-entrypoint
+COPY set-provider.sh /usr/local/bin/set-provider.sh
+COPY set-git-proxy.sh /usr/local/bin/set-git-proxy.sh
+COPY add-mcp-server.sh /usr/local/bin/add-mcp-server.sh
+COPY start-agent.sh /usr/local/bin/start-agent.sh
+COPY stop-agent.sh /usr/local/bin/stop-agent.sh
+RUN chmod +x /usr/local/bin/openclaw-entrypoint /usr/local/bin/set-provider.sh /usr/local/bin/set-git-proxy.sh /usr/local/bin/add-mcp-server.sh /usr/local/bin/start-agent.sh /usr/local/bin/stop-agent.sh
 
 ENTRYPOINT ["/usr/local/bin/openclaw-entrypoint"]
