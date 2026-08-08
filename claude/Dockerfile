@@ -21,8 +21,9 @@ COPY defaults.env /opt/defaults.env
 COPY entrypoint.sh /usr/local/bin/claude-entrypoint
 COPY start-agent.sh /usr/local/bin/start-agent.sh
 COPY set-provider.sh /usr/local/bin/set-provider.sh
+COPY add-mcp-server.sh /usr/local/bin/add-mcp-server.sh
 COPY set-git-proxy.sh /usr/local/bin/set-git-proxy.sh
 COPY stop-agent.sh /usr/local/bin/stop-agent.sh
-RUN chmod +x /usr/local/bin/claude-entrypoint /usr/local/bin/start-agent.sh /usr/local/bin/set-provider.sh /usr/local/bin/set-git-proxy.sh /usr/local/bin/stop-agent.sh
+RUN chmod +x /usr/local/bin/claude-entrypoint /usr/local/bin/start-agent.sh /usr/local/bin/set-provider.sh /usr/local/bin/add-mcp-server.sh /usr/local/bin/set-git-proxy.sh /usr/local/bin/stop-agent.sh
 
 ENTRYPOINT ["/usr/local/bin/claude-entrypoint"]
